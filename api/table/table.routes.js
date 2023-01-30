@@ -1,5 +1,5 @@
 const express = require('express')
-const { joinTable, resetTables } = require('./auth.controller')
+const { joinTable, resetTables } = require('./table.controller')
 
 const router = express.Router()
 

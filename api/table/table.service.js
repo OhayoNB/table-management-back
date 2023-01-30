@@ -1,4 +1,5 @@
 const ObjectId = require('mongodb').ObjectId
+const dbService = require('../../services/db.service')
 
 //prettier-ignore
 async function joinTable(firstName, lastName, profilePictureUrl, portfolioStage) {
@@ -6,7 +7,7 @@ async function joinTable(firstName, lastName, profilePictureUrl, portfolioStage)
     const collection = await dbService.getCollection('table')
     const table = await collection.findOne({
       portfolioStage: portfolioStage,
-      users: { $size: { $lt: 4 } },
+      'users.3': { $exists: false },
     })
     const user = { firstName, lastName, profilePictureUrl }
     if (!table) {
@@ -37,7 +38,7 @@ async function joinTable(firstName, lastName, profilePictureUrl, portfolioStage)
 async function resetTables() {
   try {
     const collection = await dbService.getCollection('table')
-    await collection.remove({})
+    await collection.deleteMany({})
   } catch (err) {
     console.error('Cannot empty tables', err)
     throw err

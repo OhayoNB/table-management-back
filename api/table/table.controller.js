@@ -17,23 +17,10 @@ async function joinTable(req, res) {
 
 async function resetTables(req, res) {
   try {
-    const { username, password, fullname, imgUrl } = req.body
-    const account = await authService.signup(
-      username,
-      password,
-      fullname,
-      imgUrl
-    )
-    logger.debug(`auth.route - new account created: ` + JSON.stringify(account))
-    const user = await authService.login(username, password)
-    const loginToken = authService.getLoginToken(user)
-
-    logger.info('User login: ', user)
-    res.cookie('loginToken', loginToken)
-    res.json(user)
+    await tableService.resetTables()
+    res.json()
   } catch (err) {
-    logger.error('Failed to signup ' + err)
-    res.status(500).send({ err: 'Failed to signup' })
+    res.status(500).send({ err: 'Failed to reset tables' })
   }
 }
 

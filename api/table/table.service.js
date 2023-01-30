@@ -1,5 +1,5 @@
-const ObjectId = require('mongodb').ObjectId
 const dbService = require('../../services/db.service')
+const { ObjectId } = require('mongodb')
 
 //prettier-ignore
 async function joinTable(firstName, lastName, profilePictureUrl, portfolioStage) {
@@ -35,7 +35,7 @@ async function joinTable(firstName, lastName, profilePictureUrl, portfolioStage)
   }
 }
 
-async function resetTables() {
+async function deleteTables() {
   try {
     const collection = await dbService.getCollection('table')
     await collection.deleteMany({})
@@ -45,7 +45,23 @@ async function resetTables() {
   }
 }
 
+async function update(table) {
+  try {
+    const tableId = table._id
+    const objectTableId = ObjectId(tableId)
+    delete table._id
+    const collection = await dbService.getCollection('table')
+    await collection.updateOne({ _id:  objectTableId}, { $set: { ...table } })
+    table._id = tableId
+    return table
+  } catch (err) {
+    console.error(err)
+    throw err
+  }
+}
+
 module.exports = {
   joinTable,
-  resetTables,
+  deleteTables,
+  update
 }

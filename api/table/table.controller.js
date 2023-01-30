@@ -15,16 +15,29 @@ async function joinTable(req, res) {
   }
 }
 
-async function resetTables(req, res) {
+async function deleteTables(req, res) {
   try {
-    await tableService.resetTables()
+    await tableService.deleteTables()
     res.json()
   } catch (err) {
     res.status(500).send({ err: 'Failed to reset tables' })
   }
 }
 
+async function updateTable(req, res) {
+  const table = req.body
+
+  try {
+    const updatedTable = await tableService.update(table)
+    res.json(updatedTable)
+  } catch(err) {
+    console.error(err)
+    res.status(500).send({ err: 'Failed to reset tables' })
+  }
+}
+
 module.exports = {
   joinTable,
-  resetTables,
+  deleteTables,
+  updateTable
 }

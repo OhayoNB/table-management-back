@@ -1,9 +1,10 @@
 const express = require('express')
-const { joinTable, resetTables } = require('./table.controller')
+const { joinTable, deleteTables, updateTable } = require('./table.controller')
 
 const router = express.Router()
 
 router.post('/join-table', joinTable)
-router.get('/reset-tables', resetTables)
+router.put('/:id', updateTable)
+router.delete('/delete-tables', deleteTables)
 
 module.exports = router

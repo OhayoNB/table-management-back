@@ -2,14 +2,14 @@ const dbService = require('../../services/db.service')
 const { ObjectId } = require('mongodb')
 
 //prettier-ignore
-async function joinTable(firstName, lastName, profilePictureUrl, portfolioStage) {
+async function joinTable(firstName, lastName, imgUrl, portfolioStage) {
   try {
     const collection = await dbService.getCollection('table')
     const table = await collection.findOne({
       portfolioStage: portfolioStage,
       'users.3': { $exists: false },
     })
-    const user = { firstName, lastName, profilePictureUrl }
+    const user = { firstName, lastName, imgUrl }
     if (!table) {
       const collectionLength = await collection.count()
       const newTable = {
@@ -60,8 +60,19 @@ async function update(table) {
   }
 }
 
+async function getById(id) {
+  try {
+    const collection = await dbService.getCollection('table')
+    const table = collection.findOne({ _id: ObjectId(id) })
+    return table
+  } catch (err) {
+    throw err
+  }
+}
+
 module.exports = {
   joinTable,
   deleteTables,
-  update
+  update,
+  getById
 }

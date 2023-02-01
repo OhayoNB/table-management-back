@@ -1,12 +1,12 @@
 const tableService = require('./table.service')
 
 async function joinTable(req, res) {
-  const { firstName, lastName, profilePictureUrl, portfolioStage } = req.body
+  const { firstName, lastName, imgUrl, portfolioStage } = req.body
   try {
     const table = await tableService.joinTable(
       firstName,
       lastName,
-      profilePictureUrl,
+      imgUrl,
       portfolioStage
     )
     res.json(table)
@@ -30,14 +30,26 @@ async function updateTable(req, res) {
   try {
     const updatedTable = await tableService.update(table)
     res.json(updatedTable)
-  } catch(err) {
+  } catch (err) {
     console.error(err)
     res.status(500).send({ err: 'Failed to reset tables' })
+  }
+}
+
+async function getTableById(req, res) {
+  try {
+    const { id } = req.params
+    const table = await tableService.getById(id)
+    res.json(table)
+  } catch (err) {
+    logger.error('Failed to get table', err)
+    res.status(500).send({ err: 'Failed to get table' })
   }
 }
 
 module.exports = {
   joinTable,
   deleteTables,
-  updateTable
+  updateTable,
+  getTableById
 }

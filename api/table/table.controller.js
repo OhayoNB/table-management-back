@@ -42,7 +42,6 @@ async function getTableById(req, res) {
     const table = await tableService.getById(id)
     res.json(table)
   } catch (err) {
-    logger.error('Failed to get table', err)
     res.status(500).send({ err: 'Failed to get table' })
   }
 }

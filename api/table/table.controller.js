@@ -1,14 +1,10 @@
 const tableService = require('./table.service')
 
 async function joinTable(req, res) {
-  const { firstName, lastName, imgUrl, portfolioStage } = req.body
+  const { firstName, lastName, imgUrl, portfolioStage, id } = req.body
+  const user = { firstName, lastName, imgUrl, id }
   try {
-    const table = await tableService.joinTable(
-      firstName,
-      lastName,
-      imgUrl,
-      portfolioStage
-    )
+    const table = await tableService.joinTable(user, portfolioStage)
     res.json(table)
   } catch (err) {
     res.status(401).send({ err: 'Failed to join table' })
@@ -49,11 +45,9 @@ async function getTableById(req, res) {
 // GET LIST
 async function getTables(req, res) {
   try {
-    logger.debug('Getting Tables')
     const tables = await tableService.query()
     res.json(tables)
   } catch (err) {
-    logger.error('Failed to get tables', err)
     res.status(500).send({ err: 'Failed to get tables' })
   }
 }

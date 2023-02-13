@@ -2,14 +2,13 @@ const dbService = require('../../services/db.service')
 const { ObjectId } = require('mongodb')
 
 //prettier-ignore
-async function joinTable(firstName, lastName, imgUrl, portfolioStage) {
+async function joinTable(user, portfolioStage) {
   try {
     const collection = await dbService.getCollection('table')
     const table = await collection.findOne({
       portfolioStage: portfolioStage,
       'users.3': { $exists: false },
     })
-    const user = { firstName, lastName, imgUrl }
     if (!table) {
       const collectionLength = await collection.count()
       const newTable = {
@@ -76,7 +75,6 @@ async function query() {
     const tables = await collection.find().toArray()
     return tables
   } catch (err) {
-    logger.error('cannot find tables', err)
     throw err
   }
 }

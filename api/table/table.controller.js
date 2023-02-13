@@ -46,9 +46,22 @@ async function getTableById(req, res) {
   }
 }
 
+// GET LIST
+async function getTables(req, res) {
+  try {
+    logger.debug('Getting Tables')
+    const tables = await tableService.query()
+    res.json(tables)
+  } catch (err) {
+    logger.error('Failed to get tables', err)
+    res.status(500).send({ err: 'Failed to get tables' })
+  }
+}
+
 module.exports = {
   joinTable,
   deleteTables,
   updateTable,
-  getTableById
+  getTableById,
+  getTables,
 }

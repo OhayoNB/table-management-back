@@ -51,7 +51,7 @@ async function update(table) {
     const objectTableId = ObjectId(tableId)
     delete table._id
     const collection = await dbService.getCollection('table')
-    await collection.updateOne({ _id:  objectTableId}, { $set: { ...table } })
+    await collection.updateOne({ _id: objectTableId }, { $set: { ...table } })
     table._id = tableId
     return table
   } catch (err) {
@@ -70,9 +70,21 @@ async function getById(id) {
   }
 }
 
+async function query() {
+  try {
+    const collection = await dbService.getCollection('table')
+    const tables = await collection.find().toArray()
+    return tables
+  } catch (err) {
+    logger.error('cannot find tables', err)
+    throw err
+  }
+}
+
 module.exports = {
   joinTable,
   deleteTables,
   update,
-  getById
+  getById,
+  query,
 }

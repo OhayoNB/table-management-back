@@ -10,11 +10,19 @@ async function joinTable(user, portfolioStage) {
       'users.3': { $exists: false },
     })
     if (!table) {
-      const collectionLength = await collection.count()
+      const tables = await collection.find().sort({ "tableNumber": 1 }).toArray()
+      let tableNumber = 1
+
+      for (let index = 0; index < tables.length; index++) {
+        const table = tables[index]
+        if (table.tableNumber === tableNumber) tableNumber++
+        else break
+      }
+
       const newTable = {
         users: [user],
         portfolioStage,
-        tableNumber: collectionLength + 1,
+        tableNumber,
       }
 
       await collection.insertOne(newTable)
@@ -40,6 +48,17 @@ async function deleteTables() {
     await collection.deleteMany({})
   } catch (err) {
     console.error('Cannot empty tables', err)
+    throw err
+  }
+}
+
+
+async function deleteTable(tableId) {
+  try {
+    const collection = await dbService.getCollection('table')
+    await collection.deleteOne({ _id: ObjectId(tableId) })
+    return tableId
+  } catch (err) {
     throw err
   }
 }
@@ -72,7 +91,7 @@ async function getById(id) {
 async function query() {
   try {
     const collection = await dbService.getCollection('table')
-    const tables = await collection.find().toArray()
+    const tables = await collection.find().sort({ "tableNumber": 1 }).toArray()
     return tables
   } catch (err) {
     throw err
@@ -85,4 +104,5 @@ module.exports = {
   update,
   getById,
   query,
+  deleteTable
 }

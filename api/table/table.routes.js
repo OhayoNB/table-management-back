@@ -5,6 +5,7 @@ const {
   updateTable,
   getTableById,
   getTables,
+  deleteTable,
 } = require('./table.controller')
 
 const router = express.Router()
@@ -14,5 +15,6 @@ router.put('/:id', updateTable)
 router.get('/:id', getTableById)
 router.get('/', getTables)
 router.delete('/delete-tables', deleteTables)
+router.delete('/:id', deleteTable)
 
 module.exports = router

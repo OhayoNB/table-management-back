@@ -42,6 +42,16 @@ async function getTableById(req, res) {
   }
 }
 
+async function deleteTable(req, res) {
+  try {
+    const tableId = req.params.id
+    const removedId = await tableService.deleteTable(tableId)
+    res.send(removedId)
+  } catch (err) {
+    res.status(500).send({ err: 'Failed to remove table' })
+  }
+}
+
 // GET LIST
 async function getTables(req, res) {
   try {
@@ -58,4 +68,5 @@ module.exports = {
   updateTable,
   getTableById,
   getTables,
+  deleteTable
 }

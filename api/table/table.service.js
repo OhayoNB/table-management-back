@@ -81,7 +81,7 @@ async function update(table) {
 async function getById(id) {
   try {
     const collection = await dbService.getCollection('table')
-    const table = collection.findOne({ _id: ObjectId(id) })
+    const table = await collection.findOne({ _id: ObjectId(id) })
     return table
   } catch (err) {
     throw err

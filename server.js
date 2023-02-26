@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === 'production') {
     ],
     credentials: true,
   }
-  app.use(cors())
+  app.use(cors(corsOptions))
 }
 
 const tableRoutes = require('./api/table/table.routes')

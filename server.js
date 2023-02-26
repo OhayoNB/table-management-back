@@ -9,11 +9,16 @@ const http = require('http').createServer(app)
 app.use(express.json({ limit: '50mb' }))
 app.use(express.urlencoded({ limit: '50mb', extended: true }))
 // app.use(express.static('public'))
-let corsOptions = []
+let corsOptions = {}
 if (process.env.NODE_ENV === 'production') {
   // Express serve static files on production environment
-  corsOptions = ['https://theproductloundge.com',
-    'https://myseat.theproductlounge.com'];
+  corsOptions = {
+    origin:[
+      'https://theproductloundge.com',
+      'https://myseat.theproductlounge.com'
+    ],
+    credentials: true,
+  };
   app.use(express.static(path.resolve(__dirname, 'public')))
 } else {
   // Configuring CORS

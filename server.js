@@ -9,7 +9,7 @@ const http = require('http').createServer(app)
 app.use(express.json({ limit: '50mb' }))
 app.use(express.urlencoded({ limit: '50mb', extended: true }))
 // app.use(express.static('public'))
-let corsOptions = {}
+let corsOptions;
 if (process.env.NODE_ENV === 'production') {
   // Express serve static files on production environment
   corsOptions = {
@@ -19,7 +19,8 @@ if (process.env.NODE_ENV === 'production') {
     ],
     credentials: true,
   };
-  app.use(express.static(path.resolve(__dirname, 'public')))
+
+  // app.use(express.static(path.resolve(__dirname, 'public')))
 } else {
   // Configuring CORS
   corsOptions = {

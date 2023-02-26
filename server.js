@@ -9,26 +9,26 @@ const http = require('http').createServer(app)
 app.use(express.json({ limit: '50mb' }))
 app.use(express.urlencoded({ limit: '50mb', extended: true }))
 // app.use(express.static('public'))
-
+let corsOptions = []
 if (process.env.NODE_ENV === 'production') {
   // Express serve static files on production environment
+  corsOptions = ['https://theproductloundge.com',
+    'https://myseat.theproductlounge.com'];
   app.use(express.static(path.resolve(__dirname, 'public')))
 } else {
   // Configuring CORS
-  const corsOptions = {
+  corsOptions = {
     // Make sure origin contains the url your frontend is running on
     origin: [
       'http://127.0.0.1:8080',
       'http://localhost:8080',
       'http://127.0.0.1:3000',
       'http://localhost:3000',
-      'https://theproductloundge.com',
-      'https://myseat.theproductlounge.com',
     ],
     credentials: true,
   }
-  app.use(cors(corsOptions))
 }
+app.use(cors(corsOptions))
 
 const tableRoutes = require('./api/table/table.routes')
 

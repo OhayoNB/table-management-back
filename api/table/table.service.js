@@ -10,7 +10,8 @@ async function joinTable(user, portfolioStage) {
       'users.3': { $exists: false },
     })
     if (!table) {
-      const tables = await collection.find().sort({ "tableNumber": 1 }).toArray()
+      const tables = await collection.find().sort({ "tableNumber": 1 }).toArray();
+      let tableNumber = 1
       // let tableNumber = tables?.length > 0 ? tables[tables.length - 1]?.tableNumber + 1 : 1;
 
       for (let index = 0; index < tables.length; index++) {

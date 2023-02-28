@@ -11,13 +11,13 @@ async function joinTable(user, portfolioStage) {
     })
     if (!table) {
       const tables = await collection.find().sort({ "tableNumber": 1 }).toArray()
-      let tableNumber = tables?.length > 0 ? tables[tables.length - 1]?.tableNumber + 1 : 1;
+      // let tableNumber = tables?.length > 0 ? tables[tables.length - 1]?.tableNumber + 1 : 1;
 
-      // for (let index = 0; index < tables.length; index++) {
-      //   const table = tables[index]
-      //   if (table.tableNumber === tableNumber) tableNumber++
-      //   else break
-      // }
+      for (let index = 0; index < tables.length; index++) {
+        const table = tables[index]
+        if (table.tableNumber === tableNumber) tableNumber++
+        else break
+      }
 
       const newTable = {
         users: [user],
@@ -96,7 +96,12 @@ async function query() {
     throw err
   }
 }
+// TODO create consumer fucntion
+export function initConsumer(){
+  // TODO: listen to queue and join table one by one
+}
 
+initConsumer();
 module.exports = {
   joinTable,
   deleteTables,

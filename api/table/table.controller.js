@@ -4,13 +4,15 @@ async function joinTable(req, res) {
   const { firstName, lastName, imgUrl, portfolioStage, id } = req.body
   const user = { firstName, lastName, imgUrl, id }
   try {
+    // TODO: Push request table message to queue.
+    // publish to queue message: UUID, firstname, lastname, stage
     const table = await tableService.joinTable(user, portfolioStage)
     res.json(table)
   } catch (err) {
     res.status(401).send({ err: 'Failed to join table' })
   }
 }
-
+// Publisher (enqueue) -> [] <- Consumer (dequeue)
 async function deleteTables(req, res) {
   try {
     await tableService.deleteTables()

@@ -11,13 +11,13 @@ async function joinTable(user, portfolioStage) {
     })
     if (!table) {
       const tables = await collection.find().sort({ "tableNumber": 1 }).toArray()
-      let tableNumber = 1
+      let tableNumber = tables?.length > 0 ? tables[tables.length - 1]?.tableNumber : 1;
 
-      for (let index = 0; index < tables.length; index++) {
-        const table = tables[index]
-        if (table.tableNumber === tableNumber) tableNumber++
-        else break
-      }
+      // for (let index = 0; index < tables.length; index++) {
+      //   const table = tables[index]
+      //   if (table.tableNumber === tableNumber) tableNumber++
+      //   else break
+      // }
 
       const newTable = {
         users: [user],
@@ -41,7 +41,6 @@ async function joinTable(user, portfolioStage) {
     throw err
   }
 }
-
 async function deleteTables() {
   try {
     const collection = await dbService.getCollection('table')

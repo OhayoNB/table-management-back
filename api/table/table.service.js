@@ -52,7 +52,6 @@ async function deleteTables() {
   }
 }
 
-
 async function deleteTable(tableId) {
   try {
     const collection = await dbService.getCollection('table')
@@ -91,23 +90,23 @@ async function getById(id) {
 async function query() {
   try {
     const collection = await dbService.getCollection('table')
-    const tables = await collection.find().sort({ "tableNumber": 1 }).toArray()
+    const tables = await collection.find().sort({ tableNumber: 1 }).toArray()
     return tables
   } catch (err) {
     throw err
   }
 }
 // TODO create consumer fucntion
-export function initConsumer(){
-  // TODO: listen to queue and join table one by one
-}
+// export function initConsumer(){
+// TODO: listen to queue and join table one by one
+// }
 
-initConsumer();
+// initConsumer()
 module.exports = {
   joinTable,
   deleteTables,
   update,
   getById,
   query,
-  deleteTable
+  deleteTable,
 }
